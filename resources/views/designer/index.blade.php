@@ -15,56 +15,26 @@
         </section>
 
         {{-- MODAL Tambah --}}
-        <div class="modal fade" id="modal-tambah">
+        <div class="modal fade" id="upload">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Konten</h4>
+                        <h4 class="modal-title">Upload Design</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" id="formtambahkonten">
-                            <input type="hidden" name="id" id="id">
-                            <div class="form-group">
-                                <label for="">Klien</label>
-                                <select name="cl" id="cl" class="form-control select2"
-                                    data-placeholder="Pilih ContentWritter" style="width: 100%;">
-                                    @php
-                                        $cw = App\Client::all();
-                                    @endphp
-                                    @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Nama Projek</label>
-                                <input type="text" name="nama" id="nama" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Designer</label>
-                                <select name="designer[]" id="designer" class="form-control select2" multiple="multiple"
-                                    data-placeholder="Pilih Designer" style="width: 100%;">
-                                    @php
-                                        $cw = App\Designer::all();
-                                    @endphp
-                                    @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Jadwal Post</label>
-                                <input type="date" name="jdwl" id="jdwl" class="form-control">
-                            </div>
-                        </form>
+                        <form action="javascript:void(0)" enctype="multipart/form-data" id="formupload" method="POST">
+                            <input type="hidden" id="id">
+                            <label for="">Upload File Design</label>
+                            <input type="file" name="file" class="form-control">
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="simpancw">Tambah</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -134,7 +104,6 @@
 
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-primary btn-sm my-2" id="btntambah">Tambah Konten</button>
                     <table id="tablekonten" class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -234,27 +203,29 @@
                 ]
             });
         });
-        $("#btntambah").on('click', function() {
-            $("#modal-tambah").modal('show')
-        })
-        $("#simpancw").on("click", function() {
-            var formData = $("#formtambahkonten").serialize();
+        $("#formupload").submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var id = $('.upload').attr('data-id')
             $.ajax({
                 type: 'POST',
-                url: "{{ route('cw.simpanKonten') }}",
+                url: '{{ url('designer/uploaddesign') }}/' + id,
                 data: formData,
-                // dataType: 'JSON',
-                success: function(response) {
-                    // console.log(response)
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    this.reset();
                     Swal.fire(
-                        'Konten Berhasil Ditambahkan!',
+                        'Design Berhasil Ditambahkan!',
                         'Terima Kasih!',
                         'success')
                     $('#tablekonten').DataTable().draw(false)
-                    $('#modal-tambah').modal('hide')
-                    $('#modal-tambah').on('hidden.bs.modal', function() {
-                        $(this).find('form').trigger('reset');
-                    })
+                    $('#upload').modal('hide')
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log(data);
                 }
             })
         })

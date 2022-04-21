@@ -179,8 +179,8 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
+                        data: 'nama_client',
+                        name: 'nama_client'
                     },
                     {
                         data: 'telp',

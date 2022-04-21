@@ -35,7 +35,7 @@
                                         $cw = App\Client::all();
                                     @endphp
                                     @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->nama_client }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -236,7 +236,7 @@
             var formData = $("#formtambahkonten").serialize();
             $.ajax({
                 type: 'POST',
-                url: "{{ route('cw.simpanKonten') }}",
+                url: "{{ route('cw.simpannKonten') }}",
                 data: formData,
                 // dataType: 'JSON',
                 success: function(response) {

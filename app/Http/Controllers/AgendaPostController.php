@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AgendaPost;
 use App\Designer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -98,20 +99,23 @@ class AgendaPostController extends Controller
             return datatables()->of($data)
                 ->addColumn('action', function ($data) {
                     $data = $data->file;
-                    if($data){
-                        $checkbox = '<input type="checkbox" class="form-control disabled checked" ></input>';
+                    if ($data) {
+                        $checkbox = '<input type="checkbox" checked ></input>';
                         return $checkbox;
                     }
                     $checkbox = '<input type="checkbox" class="disabled" ></input>';
                     return $checkbox;
                 })
                 ->addColumn('file', function ($data) {
-                    $data = $data->file;
-                    if($data){
+                    $input = $data->file;
+                    if ($input) {
                         $file = '<i class="fa fa-file text-success" aria-hidden="true"></i>';
                         return $file;
                     }
-                    $file = '<i class="fa fa-file text-danger" aria-hidden="true"></i>';
+                    $file = '<button type="button" class="btn btn-primary upload" data-id="' . $data->id . '" data-toggle="modal" data-target="#upload">
+                    Upload Design
+                  </button>';
+                    // '<i class="fa fa-file text-danger" aria-hidden="true"></i>';
                     return $file;
                 })
                 ->addColumn('designer', function ($data) {
@@ -120,10 +124,29 @@ class AgendaPostController extends Controller
                     $category = Designer::select('nama')->whereIn('id', $arr)->pluck('nama')->toArray();
                     return $category;
                 })
-                ->rawColumns(['action','file'])
+                ->rawColumns(['action', 'file'])
                 ->addIndexColumn()
                 ->make(true);
         }
         return view('designer.index');
+    }
+
+    public function uploaddesign(Request $request, $id)
+    {
+        $file = $request->file('file');
+        $name_foto = \Illuminate\Support\Str::random(32);
+        $tujuan_upload = 'design'; //nama folder
+        $file->move($tujuan_upload, $name_foto . '.' . $file->getClientOriginalExtension());
+
+        AgendaPost::where('id', $id)->update(['file' => "/design/" . $name_foto . '.' . $file->getClientOriginalExtension()]);
+        DB::table('log_activity')->insert([
+            'post_id'=>$id,
+            'user_id'=>Auth::user()->id,
+            'kode_log'=>1,
+        ]);
+        return Response()->json([
+            "success" => true,
+            "file" => ''
+        ]);
     }
 }

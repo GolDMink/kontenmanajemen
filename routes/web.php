@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth','Cw'], 'prefix' => 'contentwriter'], funct
     Route::get('konten','AgendaPostController@index')->name('cw.konten');
     Route::get('kontenEdit/{id}','AgendaPostController@edit')->name('cw.kontenedit');
     Route::post('updateKonten/{id}','AgendaPostController@update')->name('cw.update');
-    Route::post('konten','AgendaPostController@simpan')->name('cw.simpanKonten');
+    Route::post('simpankonten','AgendaPostController@simpan')->name('cw.simpannKonten');
     Route::get('hapusKonten/{id}','AgendaPostController@hapus')->name('cw.hapusKonten');
 
     // KELOLA AGENDA
@@ -90,5 +90,6 @@ Route::group(['middleware' => ['auth','Designer'], 'prefix' => 'designer'], func
      Route::post('updateKonten/{id}','AgendaPostController@update')->name('cw.update');
      Route::post('konten','AgendaPostController@simpan')->name('cw.simpanKonten');
      Route::get('hapusKonten/{id}','AgendaPostController@hapus')->name('cw.hapusKonten');
+     Route::post('uploaddesign/{id}','AgendaPostController@uploaddesign')->name('cw.uploaddesign');
 });
 

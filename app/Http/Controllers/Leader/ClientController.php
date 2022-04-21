@@ -30,7 +30,7 @@ class ClientController extends Controller
     public function simpan(Request $request)
     {
        $input = [
-           'nama' => $request->nama,
+           'nama_client' => $request->nama,
            'telp' => $request->telp,
            'email' => $request->email,
        ];
