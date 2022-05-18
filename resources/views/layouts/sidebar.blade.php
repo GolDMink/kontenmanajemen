@@ -38,7 +38,7 @@
                  data-accordion="false">
                  @if ($user == '0')
                      <li class="nav-item">
-                         <a href="../../starter.html" class="nav-link">
+                         <a href="{{route('leader.dashboard')}}" class="nav-link">
                              <i class="fas fa-columns nav-icon"></i>
                              <p>Dashboard</p>
                          </a>
@@ -61,12 +61,12 @@
                              <p>Kelola Designer</p>
                          </a>
                      </li>
-                     <li class="nav-item">
+                     {{-- <li class="nav-item">
                          <a href="{{ route('leader.client') }}" class="nav-link">
                              <i class="fas fa-bookmark nav-icon"></i>
                              <p>Data Konten</p>
                          </a>
-                     </li>
+                     </li> --}}
                  @elseif ($user == '1')
                      <li class="nav-item">
                          <a href="{{ url('/') }}" class="nav-link">
@@ -100,7 +100,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('cw.agenda') }}" class="nav-link">
+                         <a href="{{ route('designer.agenda') }}" class="nav-link">
                              <i class="fas fa-calendar nav-icon"></i>
                              <p>Agenda Post</p>
                          </a>

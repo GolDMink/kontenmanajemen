@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -19,14 +20,10 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    $id = 1;
-    $user = 1;
-
-    $konten = DB::table('agenda_post')
-            ->where('id',$id)
-            ->where('id_designer',$user)
-            ->get();
-    return $konten;
+    $data = DB::table('users')->where('users.id', 2)
+            ->join('contentwriter as c','c.id_user','users.id')
+        ->first();
+    dd($data);
 });
 
 Auth::routes();
@@ -34,8 +31,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // ROUTE LEADER
-Route::group(['middleware' => ['auth','Leader'], 'prefix' => 'leader','namespace'=>'Leader'], function () {
-    Route::get('/dashboard','DashboardController@index' )->name('leader');
+Route::group(['middleware' => ['auth','Leader'], 'prefix' => 'leader'], function () {
+    Route::get('/dashboard','DashboardController@leaderIndex' )->name('leader.dashboard');
+    Route::get('/getpost','DashboardController@dataPost' )->name('leader.datapost');
+    Route::get('/getcontent','DashboardController@dataContent' )->name('leader.datacontent');
 
     // Kelola Client
     Route::get('client','ClientController@index')->name('leader.client');
@@ -64,11 +63,11 @@ Route::group(['middleware' => ['auth','Cw'], 'prefix' => 'contentwriter'], funct
     Route::get('/dashboard','DashboardController@indexcw' )->name('cw');
 
     // KELOLA KONTEN
-    Route::get('konten','AgendaPostController@index')->name('cw.konten');
-    Route::get('kontenEdit/{id}','AgendaPostController@edit')->name('cw.kontenedit');
-    Route::post('updateKonten/{id}','AgendaPostController@update')->name('cw.update');
-    Route::post('simpankonten','AgendaPostController@simpan')->name('cw.simpannKonten');
-    Route::get('hapusKonten/{id}','AgendaPostController@hapus')->name('cw.hapusKonten');
+    Route::get('konten','AgendaPostController@indexContent')->name('cw.konten');
+    Route::get('kontenEdit/{id}','AgendaPostController@editContent')->name('cw.kontenedit');
+    Route::post('updateKonten/{id}','AgendaPostController@updateContent')->name('cw.update');
+    Route::post('simpankonten','AgendaPostController@simpanContent')->name('cw.simpannKonten');
+    Route::get('hapusKonten/{id}','AgendaPostController@hapusContent')->name('cw.hapusKonten');
 
     // KELOLA AGENDA
     Route::get('agenda','AgendaPostController@index')->name('cw.agenda');
@@ -91,5 +90,8 @@ Route::group(['middleware' => ['auth','Designer'], 'prefix' => 'designer'], func
      Route::post('konten','AgendaPostController@simpan')->name('cw.simpanKonten');
      Route::get('hapusKonten/{id}','AgendaPostController@hapus')->name('cw.hapusKonten');
      Route::post('uploaddesign/{id}','AgendaPostController@uploaddesign')->name('cw.uploaddesign');
+
+     // KELOLA AGENDA
+    Route::get('agenda','AgendaPostController@designerIndex')->name('designer.agenda');
 });
 

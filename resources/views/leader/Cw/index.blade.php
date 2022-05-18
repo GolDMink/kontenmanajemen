@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">Email cw</label>
+                                        <label for="">Email</label>
                                         <input type="text" name="email" id="email" class="form-control">
                                     </div>
                                 </div>
@@ -48,10 +48,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label for="">Password cw</label>
-                                        <input type="text" name="password" id="password" class="form-control">
+                                        <label for="">Tanggal Lahir</label>
+                                        <input type="date" name="tgl" id="date" class="form-control">
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">No Telp</label>
@@ -59,6 +60,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Password</label>
+                                        <input type="text" name="password" id="password" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="">Alamat</label>
                                         <textarea name="alamat" id="alamat" class="form-control"></textarea>
@@ -96,11 +103,7 @@
                                 <input type="text" name="email" id="email1" class="form-control"
                                     placeholder="masukan email">
                             </div>
-                            <div class="form-group">
-                                <label for="">Password</label>
-                                <input type="text" name="password" id="password1" placeholder="masukan password"
-                                    class="form-control">
-                            </div>
+
                             <div class="form-group">
                                 <label for="">No Telp</label>
                                 <input type="text" name="telp" id="telp1" class="form-control"
@@ -108,7 +111,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Tanggal Lahir</label>
-                                <input type="date" name="tgl" id="tgl">
+                                <input type="date" name="tgl" id="tgl" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="">Alamat</label>
@@ -239,19 +242,20 @@
             })
         })
 
-        function editcw(id) {
+        function editCw(id) {
             $("#modal-edit").modal('show')
             $.ajax({
                 type: 'GET',
-                url: '{{ url('leader/cwedit') }}/' + id,
+                url: '{{ url('leader/Cwedit') }}/' + id,
                 dataType: 'JSON',
                 success: function(response) {
-                    console.log(response.cw)
-                    cw = response.cw;
-                    $("#id").val(cw.id);
+                    console.log(response.Cw)
+                    cw = response.Cw;
+                    $("#id").val(cw.id_user);
                     $("#username1").val(cw.username);
                     $("#telp1").val(cw.telp);
                     $("#email1").val(cw.email);
+                    $("#tgl").val(cw.tgl_lahir);
                     $("#alamat1").val(cw.alamat);
                 }
             })
@@ -262,7 +266,7 @@
             var data = $('#formeditcw').serialize();
             $.ajax({
                 type: 'POST',
-                url: '{{ url('leader/updatecw') }}/' + id,
+                url: '{{ url('leader/updateCw') }}/' + id,
                 data: data,
                 // dataType: 'JSON',
                 success: function(response) {
@@ -277,9 +281,9 @@
             })
         })
 
-        function hapuscw($id) {
+        function hapusCw($id) {
             Swal.fire({
-                title: 'Apakah Anda Yakin Akan Menghapus cw Ini?',
+                title: 'Apakah Anda Yakin Akan Menghapus user contentwritter Ini?',
                 // text: "Silahkan periksa kembali data progress kegiatan, apakah data yang anda masukkan sudah benar?!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -289,7 +293,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = "{{ url('leader/hapuscw') }}/" + $id;
+                    window.location.href = "{{ url('leader/hapusCw') }}/" + $id;
                 }
             })
         }

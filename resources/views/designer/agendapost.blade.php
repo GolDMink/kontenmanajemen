@@ -11,96 +11,84 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Halaman Client</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Halaman Client</li>
-                        </ol>
-                    </div>
-                </div>
-            </div><!-- /.container-fluid -->
+
         </section>
 
         {{-- MODAL Tambah --}}
-        <div class="modal fade" id="modal-tambah">
+        <div class="modal fade" id="upload">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Client</h4>
+                        <h4 class="modal-title">Upload Design</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" id="formtambahclient">
-                            <input type="hidden" name="id" id="id">
-                            <div class="form-group">
-                                <label for="">Nama Client</label>
-                                <input type="text" name="nama" id="nama" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">No Telp Client</label>
-                                <input type="text" name="telp" id="telp" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Email Client</label>
-                                <input type="text" name="email" id="email" class="form-control">
-                            </div>
-                            {{-- <div class="form-group">
-                                <label for="">Content Writter</label>
-                                <select name="cw[]" id="cw" class="form-control select2" multiple="multiple" data-placeholder="Pilih ContentWritter" style="width: 100%;">
-                                    @php
-                                        $cw = App\User::where('role', 1)->get();
-                                    @endphp
-                                    @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->username }}</option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
-
-                        </form>
+                        <form action="javascript:void(0)" enctype="multipart/form-data" id="formupload" method="POST">
+                            <input type="hidden" id="id">
+                            <label for="">Upload File Design</label>
+                            <input type="file" name="file" class="form-control">
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="simpanclient">Tambah Client</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
         {{-- MODAL Edit --}}
         <div class="modal fade" id="modal-edit">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Client</h4>
+                        <h4 class="modal-title">Edit Konten</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" id="formeditclient">
+                        <form action="" id="formeditKonten">
                             <div class="form-group">
-                                <label for="">Nama Client</label>
-                                <input type="text" name="nama" id="nama1" class="form-control">
+                                <label for="">Nama Klien</label>
+                                <select name="namaklien" id="namaklien1" class="form-control select2"
+                                    data-placeholder="Pilih Client" style="width: 100%;">
+                                    @php
+                                        $cw = App\Client::all();
+                                    @endphp
+                                    @foreach ($cw as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_client }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label for="">No Telp Client</label>
-                                <input type="text" name="telp" id="telp1" class="form-control">
+                                <label for="">Nama Projek</label>
+                                <input type="text" name="namaprojek" id="namaprojek1" class="form-control"
+                                    placeholder="masukan email">
                             </div>
                             <div class="form-group">
-                                <label for="">Email Client</label>
-                                <input type="text" name="email" id="email1" class="form-control">
+                                <label for="">Designer</label>
+                                <select name="designer[]" id="designer1" class="form-control select2" multiple="multiple"
+                                    data-placeholder="Pilih Designer" style="width: 100%;">
+                                    @php
+                                        $cw = App\Designer::all();
+                                    @endphp
+                                    @foreach ($cw as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Jadwal</label>
+                                <input type="date" name="jadwal" id="jadwal1" placeholder="masukan password"
+                                    class="form-control">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="updateclient">Update</button>
+                        <button type="button" class="btn btn-primary" id="updateKonten">Update</button>
                     </div>
                 </div>
             </div>
@@ -112,19 +100,20 @@
             <!-- Default box -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Data Client</h3>
+                    <h3 class="card-title">Data Konten</h3>
 
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-primary btn-sm my-2" id="btntambah">Tambah Client</button>
-                    <table id="tableclient" class="table table-bordered table-hover">
+                    <table id="tablekonten" class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Nama Konten</th>
                                 <th>Nama Client</th>
-                                <th>No Telp Client</th>
-                                <th>Email Client</th>
-                                <th>Aksi</th>
+                                <th>Designer</th>
+                                <th>File Konten</th>
+                                <th>Jadwal Post</th>
+                                <th width="10">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -166,12 +155,12 @@
             });
         });
         $('body').ready(function() {
-            $('#tableclient').DataTable({
+            $('#tablekonten').DataTable({
                 processing: true,
                 serverSide: true, //aktifkan server-side
                 autoWidth: false,
                 ajax: {
-                    url: "{{ route('leader.client') }}",
+                    url: "{{ route('designer.konten') }}",
                     type: 'GET'
                 },
                 columns: [{
@@ -179,16 +168,29 @@
                         name: 'DT_RowIndex'
                     },
                     {
-                        data: 'nama_client',
-                        name: 'nama_client'
+                        data: 'nama_projek',
+                        name: 'nama_projek'
                     },
                     {
-                        data: 'telp',
-                        name: 'telp'
+                        data: 'client',
+                        name: 'client'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'designer',
+                        name: 'designer',
+                        render: function(data) {
+                            return '<span class="badge badge-primary "> ' + data + '</span>'
+                        }
+                    },
+
+
+                    {
+                        data: 'file',
+                        name: 'file'
+                    },
+                    {
+                        data: 'jadwal_post',
+                        name: 'jadwal_post'
                     },
 
                     {
@@ -201,71 +203,75 @@
                 ]
             });
         });
-        $("#btntambah").on('click', function() {
-            $("#modal-tambah").modal('show')
-        })
-        $("#simpanclient").on("click", function() {
-            var formData = $("#formtambahclient").serialize();
+        $("#formupload").submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var id = $('.upload').attr('data-id')
             $.ajax({
                 type: 'POST',
-                url: "{{ route('leader.simpanclient') }}",
+                url: '{{ url('designer/uploaddesign') }}/' + id,
                 data: formData,
-                // dataType: 'JSON',
-                success: function(response) {
-                    // console.log(response)
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    this.reset();
                     Swal.fire(
-                        'Client Berhasil Ditambahkan!',
+                        'Design Berhasil Ditambahkan!',
                         'Terima Kasih!',
                         'success')
-                    $('#tableclient').DataTable().draw(false)
-                    $('#modal-tambah').modal('hide')
-                    $('#modal-tambah').on('hidden.bs.modal', function() {
-                        $(this).find('form').trigger('reset');
-                    })
+                    $('#tablekonten').DataTable().draw(false)
+                    $('#upload').modal('hide')
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log(data);
                 }
             })
         })
 
-        function editClient(id) {
+        function editKonten(id) {
             $("#modal-edit").modal('show')
             $.ajax({
                 type: 'GET',
-                url: '{{ url('leader/clientedit') }}/' + id,
+                url: '{{ url('contentwriter/kontenEdit') }}/' + id,
                 dataType: 'JSON',
                 success: function(response) {
-                    console.log(response.client)
-                    client = response.client;
-                    $("#id").val(client.id);
-                    $("#nama1").val(client.nama_client);
-                    $("#telp1").val(client.telp);
-                    $("#email1").val(client.email);
+                    console.log(response.kntn)
+                    kntn = response.kntn;
+                    var designer = response.kntn.id_designer.split(',');
+                    $("#id").val(kntn.id);
+                    $('[name=namaklien1]').val(kntn.nama_client);
+                    $("#namaprojek1").val(kntn.nama_projek);
+                    $("#jadwal1").val(kntn.jadwal_post);
+                    $("#designer1").val(designer).trigger('change.select2').select2({})
                 }
             })
         }
 
-        $("#updateclient").click(function() {
+        $("#updateKonten").click(function() {
             var id = $("#id").val();
-            var data = $('#formeditclient').serialize();
+            var data = $('#formeditKonten').serialize();
             $.ajax({
                 type: 'POST',
-                url: '{{ url('leader/updateclient') }}/' + id,
+                url: '{{ url('contentwriter/updateKonten') }}/' + id,
                 data: data,
                 // dataType: 'JSON',
                 success: function(response) {
                     console.log(response)
                     $('#modal-edit').modal('hide')
                     Swal.fire(
-                        'Update Client Berhasil!',
+                        'Update Konten Berhasil!',
                         'Terima Kasih!',
                         'success')
-                    $('#tableclient').DataTable().draw(false)
+                    $('#tablekonten').DataTable().draw(false)
                 }
             })
         })
 
-        function hapusClient($id) {
+        function hapusKonten($id) {
             Swal.fire({
-                title: 'Apakah Anda Yakin Akan Menghapus Client Ini?',
+                title: 'Apakah Anda Yakin Akan Menghapus Konten Ini?',
                 // text: "Silahkan periksa kembali data progress kegiatan, apakah data yang anda masukkan sudah benar?!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -275,7 +281,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = "{{ url('leader/hapusclient') }}/" + $id;
+                    window.location.href = "{{ url('contentwriter/hapusKonten') }}/" + $id;
                 }
             })
         }

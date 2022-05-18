@@ -12,10 +12,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AgendaPostController extends Controller
 {
-    public function index(Request $request)
+    public function indexContent(Request $request)
     {
         if ($request->ajax()) {
             $data = DB::table('agenda_post as a')
+                ->join('contentwriter as cw', 'cw.id_user', 'a.id_conwrit')
                 ->join('clients as c', 'c.id', 'a.id_client')
                 ->join('designer as d', 'd.id', 'a.id_designer')
                 ->select('a.*', 'c.nama_client as client')
@@ -40,9 +41,10 @@ class AgendaPostController extends Controller
         }
         return view('Cw.indexkonten');
     }
-    public function simpan(Request $request)
+    public function simpanContent(Request $request)
     {
         $input = [
+            'id_conwrit' => Auth::user()->id,
             'id_client' => $request->cl,
             'id_designer' => implode(',', $request->designer),
             'nama_projek' => $request->nama,
@@ -57,7 +59,7 @@ class AgendaPostController extends Controller
         );
     }
 
-    public function edit($id)
+    public function editContent($id)
     {
         $data = DB::table('agenda_post as a')
             ->join('clients as c', 'c.id', 'a.id_client')
@@ -67,7 +69,7 @@ class AgendaPostController extends Controller
         return response()->json(['kntn' => $data]);
     }
 
-    public function update(Request $request, $id)
+    public function updateContent(Request $request, $id)
     {
         $data = DB::table('agenda_post')->where('id', $id)->update([
             'id_client' => $request->namaklien,
@@ -79,7 +81,7 @@ class AgendaPostController extends Controller
         return response()->json(['Cw' => $data]);
     }
 
-    public function hapus($id)
+    public function hapusContent($id)
     {
         $data = DB::table('agenda_post')->where('id', $id)->delete();
         Alert::success('Berhasil Hapus', 'Data Berhasil dihapus!');
@@ -148,5 +150,34 @@ class AgendaPostController extends Controller
             "success" => true,
             "file" => ''
         ]);
+    }
+
+    public function designerIndex(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = DB::table('agenda_post as a')
+                ->join('clients as c', 'c.id', 'a.id_client')
+                ->join('designer as d', 'd.id', 'a.id_designer')
+                ->select('a.*', 'c.nama_client as client')
+                ->get();
+
+            return datatables()->of($data)
+                ->addColumn('action', function ($data) {
+                    $button = '<a href="#" onclick="editKonten(' . $data->id . ')" class="edit btn btn-info btn-sm"><i class="far fa-edit"></i></a>';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= ' <a href="#" onclick="hapusKonten(' . $data->id . ')" class="delete btn btn-danger btn-sm" id="btnHapus" data-toggle="modal" data-id="' . $data->id . '"><i class="far fa-trash-alt"></i></a>';
+                    return $button;
+                })
+                ->addColumn('designer', function ($data) {
+
+                    $arr = explode(",", $data->id_designer);
+                    $category = Designer::select('nama')->whereIn('id', $arr)->pluck('nama')->toArray();
+                    return $category;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('designer.agendapost');
     }
 }
