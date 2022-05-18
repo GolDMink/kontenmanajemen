@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Apr 2022 pada 16.36
+-- Waktu pembuatan: 18 Bulan Mei 2022 pada 03.50
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 8.0.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `agenda_post` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_conwrit` int(12) NOT NULL,
   `id_designer` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_client` int(11) NOT NULL,
   `nama_projek` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -42,12 +43,14 @@ CREATE TABLE `agenda_post` (
 -- Dumping data untuk tabel `agenda_post`
 --
 
-INSERT INTO `agenda_post` (`id`, `id_designer`, `id_client`, `nama_projek`, `file`, `jadwal_post`, `created_at`, `updated_at`) VALUES
-(1, '2', 15, 'projek 1', '/design/VYLHDwkx9bJRFuEVg0oUxHsOeZfr9j3R.png', '2022-04-09', NULL, '2022-04-18 06:40:13'),
-(5, '2', 17, 'Projek Desain Banner', '/design/9W6yscjEuzdjllK1bepI9VlwiEMDwlQx.jpg', '2022-04-11', NULL, '2022-04-18 06:40:47'),
-(6, '2', 15, 'Projek Desain Poster', '/design/lOb0bwnWqRqvRC9kG2vR7RJcSUijwZGj.png', '2022-04-11', NULL, '2022-04-18 06:41:58'),
-(7, '2', 17, 'PROJEK PEMBUATAN DESAIN MENU', '/design/sqZ4Eo7S7LAnOLUijBIz7FPXdndfMDbh.jpg', '2022-04-18', NULL, '2022-04-18 06:43:13'),
-(8, '2,3', 15, 'DESAIN PROMO RAMADHAN', NULL, '2022-04-18', NULL, '2022-04-20 03:12:11');
+INSERT INTO `agenda_post` (`id`, `id_conwrit`, `id_designer`, `id_client`, `nama_projek`, `file`, `jadwal_post`, `created_at`, `updated_at`) VALUES
+(1, 0, '2', 15, 'projek 1', '/design/VYLHDwkx9bJRFuEVg0oUxHsOeZfr9j3R.png', '2022-04-09', NULL, '2022-04-18 06:40:13'),
+(5, 0, '2', 17, 'Projek Desain Banner', '/design/9W6yscjEuzdjllK1bepI9VlwiEMDwlQx.jpg', '2022-04-11', NULL, '2022-04-18 06:40:47'),
+(6, 0, '2', 15, 'Projek Desain Poster', '/design/lOb0bwnWqRqvRC9kG2vR7RJcSUijwZGj.png', '2022-04-11', NULL, '2022-04-18 06:41:58'),
+(7, 0, '2', 17, 'PROJEK PEMBUATAN DESAIN MENU', '/design/sqZ4Eo7S7LAnOLUijBIz7FPXdndfMDbh.jpg', '2022-04-18', NULL, '2022-04-18 06:43:13'),
+(8, 0, '2,3', 15, 'DESAIN PROMO RAMADHAN', '/design/bduMjYbxYufc1pSGw4ZRcDf9Zl8JSOMB.jpg', '2022-04-18', NULL, '2022-05-11 18:37:19'),
+(10, 0, '1', 25, 'DESAIN POSTER LOMBA PENUMPASAN KEMISKINAN', NULL, '2022-05-12', NULL, NULL),
+(12, 34, '1', 25, 'DEMOM PROJEK', NULL, '2022-05-18', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -77,7 +80,9 @@ INSERT INTO `clients` (`id`, `nama_client`, `telp`, `email`, `created_at`, `upda
 (21, 'WARKOP BEDJO', '094490490', 'bedjo@mail.com', NULL, NULL),
 (22, 'demo lagi', '0192201920', 'admin@gmail.com', NULL, NULL),
 (23, 'akajk', 'akjakjak', 'kajkajka', NULL, NULL),
-(24, 'WARKOP AROS', '0839898329829', 'aros@gmail.co.id', NULL, NULL);
+(24, 'WARKOP AROS', '0839898329829', 'aros@gmail.co.id', NULL, NULL),
+(25, 'BAPPEDA KOTA KEDIRI', '08598585989', 'bappeda@mail.com', NULL, NULL),
+(26, 'STARBUCK', '08484984948', 'budis@mail.com', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -87,7 +92,7 @@ INSERT INTO `clients` (`id`, `nama_client`, `telp`, `email`, `created_at`, `upda
 
 CREATE TABLE `contentwriter` (
   `id` bigint(255) NOT NULL,
-  `user_id` int(20) NOT NULL,
+  `id_user` int(20) NOT NULL,
   `id_lead` int(125) NOT NULL,
   `nama_cowrit` varchar(255) NOT NULL,
   `alamat` varchar(255) NOT NULL,
@@ -98,17 +103,13 @@ CREATE TABLE `contentwriter` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Struktur dari tabel `cw`
+-- Dumping data untuk tabel `contentwriter`
 --
 
-CREATE TABLE `cw` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `contentwriter` (`id`, `id_user`, `id_lead`, `nama_cowrit`, `alamat`, `tgl_lahir`, `telp`, `email`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 'angga', 'manisrenggo', '2022-05-17', '08391839839', 'anggar@mail.com', '2022-05-17 02:31:37', '2022-05-17 02:31:37'),
+(4, 34, 1, 'irvan maulan', 'jl.mayoo', '2022-05-17', '0892819219', 'irvan@mail.com', '2022-05-16 21:12:20', '2022-05-16 21:12:20');
 
 -- --------------------------------------------------------
 
@@ -131,9 +132,7 @@ CREATE TABLE `designer` (
 --
 
 INSERT INTO `designer` (`id`, `id_user`, `nama`, `alamat`, `telp`, `created_at`, `updated_at`) VALUES
-(1, 2, 'd', 'amnamna', '03913913019', NULL, NULL),
-(2, 3, 'designer1', 'amnamna', '03913913019', NULL, NULL),
-(3, 5, 'designer2', 'amnamna', '03913913019', NULL, NULL);
+(1, 3, 'anggi', 'amnamna', '03913913019', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -177,7 +176,9 @@ INSERT INTO `log_activity` (`id`, `post_id`, `user_id`, `kode_log`, `created_at`
 (6, 7, 3, 1, '2022-04-18 13:43:13'),
 (7, 8, 3, 1, '2022-04-18 13:44:12'),
 (8, 8, 3, 1, '2022-04-18 13:45:07'),
-(9, 8, 3, 1, '2022-04-20 10:12:11');
+(9, 8, 3, 1, '2022-04-20 10:12:11'),
+(10, 8, 3, 1, '2022-05-12 01:37:18'),
+(11, 8, 3, 1, '2022-05-12 01:37:19');
 
 -- --------------------------------------------------------
 
@@ -239,20 +240,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'lutfirudianto', 'lutfi@mail.com', NULL, '$2y$10$hhEJvGCdP8D/rLJsHEnrb.gzzU7dGzv3C09RO62mK9CjFjRpN2mKK', 0, NULL, '2022-04-02 08:03:53', '2022-04-02 08:03:53'),
-(2, 'contentwriter', 'contentwriter@mail.com', NULL, '$2y$10$lTE.7FpiS9E0wnXhojb0KuDNtVK6d1VJ.zASsw6iFofedsxTUKgum', 1, NULL, '2022-04-02 08:36:21', '2022-04-02 08:36:21'),
-(3, 'designer', 'designer@mail.com', NULL, '$2y$10$9jWxfkydG5m.LgXx76icdekdIP2kYmuQnSJ9CABGjrGSzWBSRBq2C', 2, NULL, '2022-04-02 08:36:48', '2022-04-02 08:36:48'),
-(5, 'Designer3', 'Designer3@mail.com', NULL, '$2y$10$9jWxfkydG5m.LgXx76icdekdIP2kYmuQnSJ9CABGjrGSzWBSRBq2C', 2, NULL, NULL, NULL),
-(6, 'budi', 'budi@mail.com', NULL, '$2y$10$g8fftUY6sJtIQsoX.Wu2UOESxkbraZlLhMcjLDQrRHEpNuY3EkAhK', 1, NULL, NULL, NULL),
-(7, 'abc', 'abcbb@mail.com', NULL, '$2y$10$rd96nR4QwWG6/VjqJlJUsOMXdMqEzCIzJuJ1nvjp29et2CUhnL3sW', 1, NULL, NULL, NULL),
-(8, 'yudi', 'yudi@mail.com', NULL, '$2y$10$.F1JaODcyl6i.To9PMvjBO/14/bb6fTX6amPHWpCByaVdKnHD6LZK', 2, NULL, '2022-04-07 23:19:05', '2022-04-07 23:19:05'),
-(9, 'yudee', 'yudee@mail.com', NULL, '$2y$10$BwUfqkD83E4o8YTV2lDUX.CraPeiwF.Vj9YaZzyqQbSAgKyvomuVq', 2, NULL, '2022-04-07 23:22:56', '2022-04-07 23:22:56'),
-(11, 'yudee', 'yudhi@mail.com', NULL, '$2y$10$6AYgs9J1f/sv/L5sd7LDm.PRavRV8ZtuEHlkuneXQUIClDPT6OgOK', 2, NULL, '2022-04-07 23:23:18', '2022-04-07 23:23:18'),
-(13, 'yudee', 'yudho@mail.com', NULL, '$2y$10$8B6xodF06tZ5ou8QWH2hHusy49p5R2LCZKTNEuIrZQDvaw29Oc1bu', 2, NULL, '2022-04-07 23:24:02', '2022-04-07 23:24:02'),
-(15, 'yudee', 'yudh@mail.com', NULL, '$2y$10$M3pvhGtdAoMRZgfkGemQVeuQBHaPRugFY5YMHe2IiYggXcM5CnXXi', 2, NULL, '2022-04-07 23:24:36', '2022-04-07 23:24:36'),
-(17, 'yudee', 'ytt@mail.com', NULL, '$2y$10$P9ki5UKUqo1LbDKJ91h2bOc32tsUxVceT0qD.cM.yp2pYlkM75aKm', 2, NULL, '2022-04-07 23:28:46', '2022-04-07 23:28:46'),
-(19, 'yudee', 'yt@mail.com', NULL, '$2y$10$1UqTJSpHEkDrESkeEs2aIecTHI/YJaxW.v7iVyfdBDXycU8Y245ty', 2, NULL, '2022-04-07 23:29:23', '2022-04-07 23:29:23'),
-(21, 'yudee', 'y2@mail.com', NULL, '$2y$10$OmmWv6qcDaez4f72ykZ7WukKswUbmPMi8Rl9iardXp3aSm6kO3Xj6', 2, NULL, '2022-04-07 23:30:21', '2022-04-07 23:30:21');
+(1, 'anggoro ', 'anggoro@mail.com', NULL, '$2y$10$hhEJvGCdP8D/rLJsHEnrb.gzzU7dGzv3C09RO62mK9CjFjRpN2mKK', 0, NULL, '2022-04-02 08:03:53', '2022-04-02 08:03:53'),
+(2, 'angga rahmaden', 'anggarahmad@mail.com', NULL, '$2y$10$lTE.7FpiS9E0wnXhojb0KuDNtVK6d1VJ.zASsw6iFofedsxTUKgum', 1, NULL, '2022-04-02 08:36:21', '2022-04-02 08:36:21'),
+(3, 'angginn', 'anggi@mail.com', NULL, '$2y$10$9jWxfkydG5m.LgXx76icdekdIP2kYmuQnSJ9CABGjrGSzWBSRBq2C', 2, NULL, '2022-04-02 08:36:48', '2022-04-02 08:36:48'),
+(22, 'DODI ILHAM', 'dodi@mail.com', NULL, '$2y$10$8UDmsl2.BqFFA0tlMgUtCO.8YCrH/p8ypWkago02DxorJ5OAKavjq', 2, NULL, NULL, NULL),
+(24, 'AZIZ SEPTA', 'aziz@mail.com', NULL, '12341234', 2, NULL, '2022-05-11 20:40:43', '2022-05-11 20:40:43'),
+(34, 'irvan', 'irvan@mail.com', NULL, '$2y$10$HkTIU0eNz7rOyOIXlHazv.v98I85yvu2MsI.P/sLWFwCeQSxcZwcO', 1, NULL, '2022-05-16 21:12:20', '2022-05-16 21:12:20');
 
 --
 -- Indexes for dumped tables
@@ -274,12 +267,6 @@ ALTER TABLE `clients`
 -- Indeks untuk tabel `contentwriter`
 --
 ALTER TABLE `contentwriter`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indeks untuk tabel `cw`
---
-ALTER TABLE `cw`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -327,31 +314,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `agenda_post`
 --
 ALTER TABLE `agenda_post`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT untuk tabel `contentwriter`
 --
 ALTER TABLE `contentwriter`
-  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT untuk tabel `cw`
---
-ALTER TABLE `cw`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `designer`
 --
 ALTER TABLE `designer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -363,7 +344,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT untuk tabel `log_activity`
 --
 ALTER TABLE `log_activity`
-  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
@@ -375,7 +356,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
