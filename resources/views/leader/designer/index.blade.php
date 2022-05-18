@@ -215,7 +215,7 @@
                 success: function(response) {
                     // console.log(response)
                     Swal.fire(
-                        'designer Berhasil Ditambahkan!',
+                        'Designer Berhasil Ditambahkan!',
                         'Terima Kasih!',
                         'success')
                     $('#tabledesigner').DataTable().draw(false)

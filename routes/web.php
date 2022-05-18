@@ -85,13 +85,15 @@ Route::group(['middleware' => ['auth','Designer'], 'prefix' => 'designer'], func
 
      // KELOLA KONTEN
      Route::get('konten','AgendaPostController@showKonten')->name('designer.konten');
+     Route::get('getdesign/{id}','AgendaPostController@getDesign')->name('designer.design');
      Route::get('kontenEdit/{id}','AgendaPostController@edit')->name('cw.kontenedit');
      Route::post('updateKonten/{id}','AgendaPostController@update')->name('cw.update');
      Route::post('konten','AgendaPostController@simpan')->name('cw.simpanKonten');
-     Route::get('hapusKonten/{id}','AgendaPostController@hapus')->name('cw.hapusKonten');
+     Route::get('hapusDesign/{id}','AgendaPostController@hapusDesign')->name('designer.hapusDesign');
      Route::post('uploaddesign/{id}','AgendaPostController@uploaddesign')->name('cw.uploaddesign');
 
      // KELOLA AGENDA
     Route::get('agenda','AgendaPostController@designerIndex')->name('designer.agenda');
+    Route::get('konfirmasi/{id}','AgendaPostController@konfirmasi')->name('designer.konfirmasi');
 });
 

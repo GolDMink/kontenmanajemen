@@ -38,6 +38,27 @@
                 </div>
             </div>
         </div>
+        {{-- MODAL Tambah --}}
+        <div class="modal fade" id="modal-lihat">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Detail Design</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="" id="pict" alt="">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        {{-- <button type="button" id="update" class="btn btn-primary btn-block">Update</button> --}}
+                        <button type="button" class="hapus btn btn-danger btn-block">Hapus</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         {{-- MODAL Edit --}}
         <div class="modal fade" id="modal-edit">
             <div class="modal-dialog modal-lg">
@@ -104,7 +125,7 @@
 
                 </div>
                 <div class="card-body">
-                    <table id="tablekonten" class="table table-bordered table-hover">
+                    <table id="tablekonten" class="table table-bordered table-hover ">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -154,6 +175,8 @@
                 }
             });
         });
+
+
         $('body').ready(function() {
             $('#tablekonten').DataTable({
                 processing: true,
@@ -163,6 +186,28 @@
                     url: "{{ route('designer.konten') }}",
                     type: 'GET'
                 },
+                columnDefs: [{
+                        "targets": 3, // your case first column
+                        "className": "text-center",
+                        "width": "4%",
+
+                    },
+                    {
+                        "targets": 4, // your case first column
+                        "className": "text-center",
+
+                    },
+                    {
+                        "targets": 5, // your case first column
+                        "className": "text-center",
+
+                    },
+                    {
+                        "targets": 6, // your case first column
+                        "className": "text-center",
+
+                    }
+                ],
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex'
@@ -179,7 +224,8 @@
                         data: 'designer',
                         name: 'designer',
                         render: function(data) {
-                            return '<span class="badge badge-primary "> ' + data + '</span>'
+                            return '<h2 style="font-size:1rem;" class="badge badge-primary "> ' +
+                                data + '</h2>'
                         }
                     },
 
@@ -190,7 +236,14 @@
                     },
                     {
                         data: 'jadwal_post',
-                        name: 'jadwal_post'
+                        name: 'jadwal_post',
+                        "render": function(data) {
+                            var date = new Date(data);
+                            var month = date.getMonth() + 1;
+                            return (month.length > 1 ? month : "0" + month) + "/" + date
+                                .getDate() +
+                                "/" + date.getFullYear();
+                        }
                     },
 
                     {
@@ -249,6 +302,25 @@
             })
         }
 
+        function lihatKonten(id) {
+            $("#modal-lihat").modal('show')
+            $.ajax({
+                type: 'GET',
+                url: '{{ url('designer/getdesign') }}/' + id,
+                dataType: 'JSON',
+                success: function(response) {
+                    $.each(response, function(key, value) {
+                        $("#modal-lihat").css("text-align", "center");
+                        $("#pict").attr("src", value.file).css("width", "60%");
+                        $(".hapus").on("click", function() {
+                            var id = value.id
+                            hapusKonten(id)
+                        })
+                    });
+                }
+            })
+        }
+
         $("#updateKonten").click(function() {
             var id = $("#id").val();
             var data = $('#formeditKonten').serialize();
@@ -269,9 +341,10 @@
             })
         })
 
+
         function hapusKonten($id) {
             Swal.fire({
-                title: 'Apakah Anda Yakin Akan Menghapus Konten Ini?',
+                title: 'Apakah Anda Yakin Akan Menghapus Design Ini?',
                 // text: "Silahkan periksa kembali data progress kegiatan, apakah data yang anda masukkan sudah benar?!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -280,8 +353,27 @@
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Batal'
             }).then((result) => {
+                var id = id;
+                console.log(id)
                 if (result.value) {
-                    window.location.href = "{{ url('contentwriter/hapusKonten') }}/" + $id;
+                    window.location.href = "{{ url('designer/hapusDesign') }}/" + $id;
+                }
+            })
+        }
+    </script>
+    <script>
+        function konfirmasiDesign($id) {
+            Swal.fire({
+                title: 'Apakah anda yakin ingin Menkonfirmasi tugas tersebut?',
+                icon: 'question',
+                iconHtml: '?',
+                confirmButtonText: 'ya',
+                cancelButtonText: 'tidak',
+                showCancelButton: true,
+                showCloseButton: true
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = "{{ url('designer/konfirmasi') }}/" + $id;
                 }
             })
         }

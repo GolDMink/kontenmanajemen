@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use File;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class AgendaPostController extends Controller
@@ -49,6 +50,7 @@ class AgendaPostController extends Controller
             'id_designer' => implode(',', $request->designer),
             'nama_projek' => $request->nama,
             'jadwal_post' => $request->jdwl,
+            'status' => 0,
         ];
         DB::table('agenda_post')->insert($input);
         return response()->json(
@@ -100,28 +102,30 @@ class AgendaPostController extends Controller
 
             return datatables()->of($data)
                 ->addColumn('action', function ($data) {
-                    $data = $data->file;
-                    if ($data) {
-                        $checkbox = '<input type="checkbox" checked ></input>';
-                        return $checkbox;
+                    if ($data->file) {
+                        $checkbox = '<input type="checkbox" name="check" onclick="konfirmasiDesign(' . $data->id . ')"></input>';
+                        if ($data->status == 1) {
+                            $checkbox = '<input type="checkbox" checked ></input>';
+                        } else {
+                            $checkbox = '<input type="checkbox" name="check" onclick="konfirmasiDesign(' . $data->id . ')"></input>';
+                        }
+                    } else {
+                        $checkbox = '-';
                     }
-                    $checkbox = '<input type="checkbox" class="disabled" ></input>';
                     return $checkbox;
                 })
                 ->addColumn('file', function ($data) {
                     $input = $data->file;
                     if ($input) {
-                        $file = '<i class="fa fa-file text-success" aria-hidden="true"></i>';
-                        return $file;
+                        $file = '<a id="lihat" onclick="lihatKonten(' . $data->id . ')" class="btn btn-success"><i class="fa fa-file" aria-hidden="true"></i> Lihat </a>';
+                    }else{
+                        $file = '<button type="button" class="btn btn-warning text-white upload" data-id="' . $data->id . '" data-toggle="modal" data-target="#upload">
+                        Upload Design
+                      </button>';
                     }
-                    $file = '<button type="button" class="btn btn-primary upload" data-id="' . $data->id . '" data-toggle="modal" data-target="#upload">
-                    Upload Design
-                  </button>';
-                    // '<i class="fa fa-file text-danger" aria-hidden="true"></i>';
                     return $file;
                 })
                 ->addColumn('designer', function ($data) {
-
                     $arr = explode(",", $data->id_designer);
                     $category = Designer::select('nama')->whereIn('id', $arr)->pluck('nama')->toArray();
                     return $category;
@@ -133,6 +137,13 @@ class AgendaPostController extends Controller
         return view('designer.index');
     }
 
+    public function konfirmasi($id)
+    {
+        $data = DB::table('agenda_post')->where('id', $id)->update(['status' => 1]);
+        Alert::success('Berhasil', 'Data Berhasil dikonfirmasi');
+        return redirect()->route('designer.konten');
+    }
+
     public function uploaddesign(Request $request, $id)
     {
         $file = $request->file('file');
@@ -142,14 +153,25 @@ class AgendaPostController extends Controller
 
         AgendaPost::where('id', $id)->update(['file' => "/design/" . $name_foto . '.' . $file->getClientOriginalExtension()]);
         DB::table('log_activity')->insert([
-            'post_id'=>$id,
-            'user_id'=>Auth::user()->id,
-            'kode_log'=>1,
+            'post_id' => $id,
+            'user_id' => Auth::user()->id,
+            'kode_log' => 1,
         ]);
         return Response()->json([
             "success" => true,
             "file" => ''
         ]);
+    }
+
+    public function hapusDesign($id)
+    {
+        DB::table('agenda_post')->where('id', $id)->update(['status'=>0,'file'=>null]);
+        $data = DB::table('agenda_post')->where('id', $id)->first();
+        if(File::exists(public_path($data->file))){
+            File::delete(public_path($data->file));
+        }
+        Alert::success('Berhasil Hapus', 'Data Design Berhasil dihapus!');
+        return redirect()->back();
     }
 
     public function designerIndex(Request $request)
@@ -179,5 +201,10 @@ class AgendaPostController extends Controller
                 ->make(true);
         }
         return view('designer.agendapost');
+    }
+
+    public function getDesign($id){
+        $data = DB::table('agenda_post')->where('id',$id)->get();
+        return $data;
     }
 }

@@ -38,7 +38,7 @@ class DesignerController extends Controller
         $user = new User();
         $user->username = $request->username;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = bcrypt($request->password);
         $user->role = 2;
         $user->save();
 
