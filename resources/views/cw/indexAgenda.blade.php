@@ -19,7 +19,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Tambah Konten</h4>
+                        <h4 class="modal-title">Tambah Agenda</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Jadwal Post</label>
-                                <input type="datetime-local" name="jdwl" id="jdwl" class="form-control">
+                                <input type="date" name="jdwl" id="jdwl" class="form-control">
                             </div>
                         </form>
                     </div>
@@ -68,57 +68,53 @@
                 </div>
             </div>
         </div>
-        {{-- MODAL Edit --}}
-        <div class="modal fade" id="modal-edit">
+        <div class="modal fade" id="modal-post">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Konten</h4>
+                        <h4 class="modal-title">Atur Jadwal Agenda</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" id="formeditKonten">
+                        <form action="" id="formpostkonten">
+                            <input type="hidden" name="id" id="id">
                             <div class="form-group">
-                                <label for="">Nama Klien</label>
-                                <select name="namaklien" id="namaklien1" class="form-control select2"
-                                    data-placeholder="Pilih Client" style="width: 100%;">
-                                    @php
-                                        $cw = App\Client::all();
-                                    @endphp
-                                    @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_client }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Nama Projek</label>
-                                <input type="text" name="namaprojek" id="namaprojek1" class="form-control"
-                                    placeholder="masukan email">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Designer</label>
-                                <select name="designer[]" id="designer1" class="form-control select2" multiple="multiple"
-                                    data-placeholder="Pilih Designer" style="width: 100%;">
-                                    @php
-                                        $cw = App\Designer::all();
-                                    @endphp
-                                    @foreach ($cw as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Jadwal</label>
-                                <input type="datetime-local" name="jadwal" id="jadwal1" placeholder="masukan password"
-                                    class="form-control">
+                                <label for="">Pilih Jadwal Post</label>
+                                <input type="datetime-local" name="jadwalpost" id="jadwalpost" class="form-control">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="updateKonten">Update</button>
+                        <button type="button" class="btn btn-primary" id="simpanpost">Tambah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- MODAL Edit --}}
+        <div class="modal fade" id="modal-edit">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Jadwal Agenda</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="formeditAgenda">
+                            <input type="hidden" name="id" id="id1" class="form-control">
+                            <div class="form-group">
+                                <label for="">Jadwal Agenda</label>
+                                <input type="datetime-local" name="jadwalpost" id="jadwal1" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="updateAgenda">Update</button>
                     </div>
                 </div>
             </div>
@@ -134,7 +130,6 @@
 
                 </div>
                 <div class="card-body">
-                    <button class="btn btn-primary btn-sm my-2" id="btntambah">Tambah Konten</button>
                     <table id="tablekonten" class="table table-bordered table-hover">
                         <thead>
                             <tr>
@@ -167,7 +162,6 @@
     <script src="{{ asset('template/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('template/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment-with-locales.min.js" integrity="sha512-vFABRuf5oGUaztndx4KoAEUVQnOvAIFs59y4tO0DILGWhQiFnFHiR+ZJfxLDyJlXgeut9Z07Svuvm+1Jv89w5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(function() {
             //Initialize Select2 Elements
@@ -191,7 +185,7 @@
                 serverSide: true, //aktifkan server-side
                 autoWidth: false,
                 ajax: {
-                    url: "{{ route('cw.konten') }}",
+                    url: "{{ route('cw.agenda') }}",
                     type: 'GET'
                 },
                 columns: [{
@@ -216,17 +210,9 @@
 
 
                     {
-                        data: 'jadwal_dateline',
-                        name: 'jadwal_dateline',
-                        "render": function(data) {
-                            var date = new Date(data);
-                            var month = date.getMonth() + 1;
-                            var hrs = date.getHours();
-                            var min = date.getMinutes();
-                            return (month.length > 1 ? month : "0" + month) + "/" + date
-                                .getDate() +
-                                "/" + date.getFullYear() + " - " + hrs + ":"+ min;
-                        }
+                        data: 'jadwal',
+                        name: 'jadwal',
+
                     },
 
                     {
@@ -264,35 +250,79 @@
             })
         })
 
-        function editKonten(id) {
+        // function editAgenda(id) {
+        //     $("#modal-edit").modal('show')
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '{{ url('contentwriter/kontenEdit') }}/' + id,
+        //         dataType: 'JSON',
+        //         success: function(response) {
+        //             console.log(response.kntn)
+        //             kntn = response.kntn;
+        //             var designer = response.kntn.id_designer.split(',');
+        //             $("#id").val(kntn.id);
+        //             $('[name=namaklien1]').val(kntn.nama_client);
+        //             $("#namaprojek1").val(kntn.nama_projek);
+        //             $("#jadwal1").val(kntn.jadwal_post);
+        //             $("#designer1").val(designer).trigger('change.select2').select2({})
+        //         }
+        //     })
+        // }
+
+        function editAgenda(id) {
             $("#modal-edit").modal('show')
             $.ajax({
                 type: 'GET',
-                url: '{{ url('contentwriter/kontenEdit') }}/' + id,
+                url: '{{ url('contentwriter/detailagenda') }}/' + id,
                 dataType: 'JSON',
                 success: function(response) {
-                    kntn = response.kntn;
+                    console.log(response)
+                    agenda = response.agenda;
+                    jadwal = response.jadwal;
                     date = new Date;
-                    var time = kntn.jadwal_dateline
-                    const format1 = "yyyy-MM-dd:HH:mm"
-                    var cnvert =  date.toISOString(time)
-                    var t = cnvert.substring(0, (cnvert.indexOf("T")|0) + 6|0)
-                    var designer = response.kntn.id_designer.split(',');
-                    $("#id").val(kntn.id);
-                    $('[name=namaklien1]').val(kntn.nama_client);
-                    $("#namaprojek1").val(kntn.nama_projek);
-                    $("#jadwal1").val(t);
-                    $("#designer1").val(designer).trigger('change.select2').select2({})
+                    var time = date.jadwal
+                    $("#id1").val(agenda.id);
+                    $("#jadwal1").val(jadwal);
                 }
             })
         }
 
-        $("#updateKonten").click(function() {
+        function postAgenda(id) {
+            var id = id;
+            $("#modal-post").modal('show')
+            $("#id").val(id)
+            $("#simpanpost").on("click", function() {
+                var formData = $("#formpostkonten").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('cw.posting') }}",
+                    data: {
+                        id: jQuery('#id').val(),
+                        jadwalpost: jQuery('#jadwalpost').val(),
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        Swal.fire(
+                            'Jadwal Agenda Berhasil Ditambahkan!',
+                            'Terima Kasih!',
+                            'success')
+                        $('#tablekonten').DataTable().draw(false)
+                        $('#modal-post').modal('hide')
+                        $('#modal-post').on('hidden.bs.modal', function() {
+                            $(this).find('form').trigger('reset');
+                        })
+                    }
+                })
+            })
+        }
+
+
+        $("#updateAgenda").click(function() {
             var id = $("#id").val();
-            var data = $('#formeditKonten').serialize();
+            var data = $('#formeditAgenda').serialize();
             $.ajax({
                 type: 'POST',
-                url: '{{ url('contentwriter/updateKonten') }}/' + id,
+                url: '{{ url('contentwriter/updatejadwal') }}/',
                 data: data,
                 // dataType: 'JSON',
                 success: function(response) {
@@ -307,9 +337,9 @@
             })
         })
 
-        function hapusKonten($id) {
+        function hapusAgenda($id) {
             Swal.fire({
-                title: 'Apakah Anda Yakin Akan Menghapus Konten Ini?',
+                title: 'Apakah Anda Yakin Akan Menghapus Agenda Ini?',
                 // text: "Silahkan periksa kembali data progress kegiatan, apakah data yang anda masukkan sudah benar?!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -319,7 +349,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.value) {
-                    window.location.href = "{{ url('contentwriter/hapusKonten') }}/" + $id;
+                    window.location.href = "{{ url('contentwriter/hapusagenda') }}/" + $id;
                 }
             })
         }

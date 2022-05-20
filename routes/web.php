@@ -70,11 +70,15 @@ Route::group(['middleware' => ['auth','Cw'], 'prefix' => 'contentwriter'], funct
     Route::get('hapusKonten/{id}','AgendaPostController@hapusContent')->name('cw.hapusKonten');
 
     // KELOLA AGENDA
-    Route::get('agenda','AgendaPostController@index')->name('cw.agenda');
+    Route::get('agenda','AgendaPostController@indexAgenda')->name('cw.agenda');
     Route::get('agenda/{id}','AgendaPostController@edit')->name('agenda.edit');
     Route::post('update/{id}','AgendaPostController@update')->name('cw.update');
     Route::post('simpan','AgendaController@simpan')->name('cw.simpanagenda');
     Route::get('hapus/{id}','AgendaPostController@hapus')->name('cw.hapusagenda');
+    Route::post('postjadwal','AgendaPostController@postAgenda')->name('cw.posting');
+    Route::post('updatejadwal','AgendaPostController@postAgenda')->name('cw.updateagenda');
+    Route::get('detailagenda/{id}','AgendaPostController@getAgenda')->name('cw.getagenda');
+    Route::get('hapusagenda/{id}','AgendaPostController@hapusAgenda')->name('cw.hapusagenda');
 
 });
 
