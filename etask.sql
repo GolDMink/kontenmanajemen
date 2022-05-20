@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Bulan Mei 2022 pada 03.50
+-- Waktu pembuatan: 20 Bulan Mei 2022 pada 05.04
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 8.0.12
 
@@ -34,7 +34,9 @@ CREATE TABLE `agenda_post` (
   `id_client` int(11) NOT NULL,
   `nama_projek` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `jadwal_post` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL,
+  `jadwal_dateline` datetime DEFAULT NULL,
+  `jadwal_post` datetime DEFAULT NULL ON UPDATE current_timestamp(),
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -43,14 +45,24 @@ CREATE TABLE `agenda_post` (
 -- Dumping data untuk tabel `agenda_post`
 --
 
-INSERT INTO `agenda_post` (`id`, `id_conwrit`, `id_designer`, `id_client`, `nama_projek`, `file`, `jadwal_post`, `created_at`, `updated_at`) VALUES
-(1, 0, '2', 15, 'projek 1', '/design/VYLHDwkx9bJRFuEVg0oUxHsOeZfr9j3R.png', '2022-04-09', NULL, '2022-04-18 06:40:13'),
-(5, 0, '2', 17, 'Projek Desain Banner', '/design/9W6yscjEuzdjllK1bepI9VlwiEMDwlQx.jpg', '2022-04-11', NULL, '2022-04-18 06:40:47'),
-(6, 0, '2', 15, 'Projek Desain Poster', '/design/lOb0bwnWqRqvRC9kG2vR7RJcSUijwZGj.png', '2022-04-11', NULL, '2022-04-18 06:41:58'),
-(7, 0, '2', 17, 'PROJEK PEMBUATAN DESAIN MENU', '/design/sqZ4Eo7S7LAnOLUijBIz7FPXdndfMDbh.jpg', '2022-04-18', NULL, '2022-04-18 06:43:13'),
-(8, 0, '2,3', 15, 'DESAIN PROMO RAMADHAN', '/design/bduMjYbxYufc1pSGw4ZRcDf9Zl8JSOMB.jpg', '2022-04-18', NULL, '2022-05-11 18:37:19'),
-(10, 0, '1', 25, 'DESAIN POSTER LOMBA PENUMPASAN KEMISKINAN', NULL, '2022-05-12', NULL, NULL),
-(12, 34, '1', 25, 'DEMOM PROJEK', NULL, '2022-05-18', NULL, NULL);
+INSERT INTO `agenda_post` (`id`, `id_conwrit`, `id_designer`, `id_client`, `nama_projek`, `file`, `status`, `jadwal_dateline`, `jadwal_post`, `created_at`, `updated_at`) VALUES
+(1, 0, '2', 15, 'projek 1', '/design/VYLHDwkx9bJRFuEVg0oUxHsOeZfr9j3R.png', 0, '2022-05-19 08:21:29', '2022-04-09 00:00:00', NULL, '2022-04-18 06:40:13'),
+(5, 0, '2', 17, 'Projek Desain Banner', '/design/9W6yscjEuzdjllK1bepI9VlwiEMDwlQx.jpg', 0, '2022-05-19 08:21:29', '2022-04-11 00:00:00', NULL, '2022-04-18 06:40:47'),
+(6, 0, '2', 15, 'Projek Desain Poster', '/design/lOb0bwnWqRqvRC9kG2vR7RJcSUijwZGj.png', 0, '2022-05-19 08:21:29', '2022-04-11 00:00:00', NULL, '2022-04-18 06:41:58'),
+(7, 0, '2', 17, 'PROJEK PEMBUATAN DESAIN MENU', '/design/sqZ4Eo7S7LAnOLUijBIz7FPXdndfMDbh.jpg', 0, '2022-05-19 08:21:29', '2022-04-18 00:00:00', NULL, '2022-04-18 06:43:13'),
+(8, 0, '2,3', 15, 'DESAIN PROMO RAMADHAN', '/design/bduMjYbxYufc1pSGw4ZRcDf9Zl8JSOMB.jpg', 0, '2022-05-19 08:21:29', '2022-04-18 00:00:00', NULL, '2022-05-11 18:37:19'),
+(10, 0, '1', 25, 'DESAIN POSTER LOMBA PENUMPASAN KEMISKINAN', '/design/IjcCl3eGbWYrzIxRobD0Q4Rhsv7k5vPw.png', 1, '2022-05-19 08:21:29', '2022-05-12 00:00:00', NULL, '2022-05-18 00:03:58'),
+(12, 34, '1,7,8', 15, 'DEMOM PROJEK', '/design/1AqGVwELHnaulbRx3BY35W5SlY45VRZX.png', 1, '2022-05-20 08:26:08', NULL, NULL, '2022-05-18 01:26:34'),
+(13, 34, '8', 24, 'PROJEK PEMBUATAN DESAIN BAJU', NULL, 0, '2022-05-20 08:15:29', NULL, NULL, '2022-05-18 11:47:18'),
+(14, 34, '1,8', 17, 'DESAIN PROMO 12.12', '/design/tNCsCJhnTbs2BKRgpf6Y6UACoTeIapf4.png', 1, '2022-05-20 08:17:05', '2022-05-23 01:17:00', NULL, '2022-05-18 10:14:21'),
+(15, 34, '1,7', 21, 'Poster BARU', NULL, 0, '2022-05-20 08:17:24', '2022-05-07 06:05:00', NULL, NULL),
+(16, 34, '1', 18, 'WAGU', NULL, 0, '2022-05-19 08:23:33', '2022-05-20 00:00:00', NULL, NULL),
+(17, 34, '7,8', 17, 'WAGU PROJEK', NULL, 0, '2022-05-19 10:40:41', '2022-05-19 10:40:00', NULL, NULL),
+(18, 34, '7', 21, 'BEDJO PROJEK', NULL, 0, '2022-05-19 10:40:54', '2022-05-28 10:40:00', NULL, NULL),
+(19, 34, '7', 25, 'DESAIN POSTER LOMBA INOVASI KREATIF', NULL, 0, '2022-05-19 10:41:15', '2022-05-21 10:41:00', NULL, NULL),
+(20, 34, '7', 20, 'BRADER PROJEK', NULL, 0, '2022-05-19 10:41:41', NULL, NULL, NULL),
+(21, 34, '1', 15, 'aa', NULL, 0, NULL, '2022-05-20 08:34:00', NULL, NULL),
+(22, 34, '7', 18, 'demo lagi', NULL, 0, '2022-05-13 08:36:00', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -132,7 +144,9 @@ CREATE TABLE `designer` (
 --
 
 INSERT INTO `designer` (`id`, `id_user`, `nama`, `alamat`, `telp`, `created_at`, `updated_at`) VALUES
-(1, 3, 'anggi', 'amnamna', '03913913019', NULL, NULL);
+(1, 3, 'anggi', 'amnamna', '03913913019', NULL, NULL),
+(7, 35, 'budi', 'jl.budungan', '08494849849', '2022-05-17 18:54:02', '2022-05-17 18:54:02'),
+(8, 36, 'yeni', 'banaran', '08598594', '2022-05-17 20:10:52', '2022-05-17 20:10:52');
 
 -- --------------------------------------------------------
 
@@ -178,7 +192,13 @@ INSERT INTO `log_activity` (`id`, `post_id`, `user_id`, `kode_log`, `created_at`
 (8, 8, 3, 1, '2022-04-18 13:45:07'),
 (9, 8, 3, 1, '2022-04-20 10:12:11'),
 (10, 8, 3, 1, '2022-05-12 01:37:18'),
-(11, 8, 3, 1, '2022-05-12 01:37:19');
+(11, 8, 3, 1, '2022-05-12 01:37:19'),
+(12, 10, 3, 1, '2022-05-18 07:03:58'),
+(13, 12, 3, 1, '2022-05-18 07:05:07'),
+(14, 13, 36, 1, '2022-05-18 07:38:17'),
+(15, 12, 3, 1, '2022-05-18 08:26:34'),
+(16, 14, 3, 1, '2022-05-18 17:14:21'),
+(17, 13, 36, 1, '2022-05-18 18:47:18');
 
 -- --------------------------------------------------------
 
@@ -245,7 +265,9 @@ INSERT INTO `users` (`id`, `username`, `email`, `email_verified_at`, `password`,
 (3, 'angginn', 'anggi@mail.com', NULL, '$2y$10$9jWxfkydG5m.LgXx76icdekdIP2kYmuQnSJ9CABGjrGSzWBSRBq2C', 2, NULL, '2022-04-02 08:36:48', '2022-04-02 08:36:48'),
 (22, 'DODI ILHAM', 'dodi@mail.com', NULL, '$2y$10$8UDmsl2.BqFFA0tlMgUtCO.8YCrH/p8ypWkago02DxorJ5OAKavjq', 2, NULL, NULL, NULL),
 (24, 'AZIZ SEPTA', 'aziz@mail.com', NULL, '12341234', 2, NULL, '2022-05-11 20:40:43', '2022-05-11 20:40:43'),
-(34, 'irvan', 'irvan@mail.com', NULL, '$2y$10$HkTIU0eNz7rOyOIXlHazv.v98I85yvu2MsI.P/sLWFwCeQSxcZwcO', 1, NULL, '2022-05-16 21:12:20', '2022-05-16 21:12:20');
+(34, 'irvan', 'irvan@mail.com', NULL, '$2y$10$HkTIU0eNz7rOyOIXlHazv.v98I85yvu2MsI.P/sLWFwCeQSxcZwcO', 1, NULL, '2022-05-16 21:12:20', '2022-05-16 21:12:20'),
+(35, 'budi', 'budi@mail.com', NULL, '$2y$10$HkTIU0eNz7rOyOIXlHazv.v98I85yvu2MsI.P/sLWFwCeQSxcZwcO', 2, NULL, '2022-05-17 18:54:02', '2022-05-17 18:54:02'),
+(36, 'yeni', 'yeni@mail.com', NULL, '$2y$10$xQjbxiZQkMTktEG6jzapeOSfsPq4s86aSNhyYuBQkeqIyMjXxtfYS', 2, NULL, '2022-05-17 20:10:52', '2022-05-17 20:10:52');
 
 --
 -- Indexes for dumped tables
@@ -314,7 +336,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `agenda_post`
 --
 ALTER TABLE `agenda_post`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT untuk tabel `clients`
@@ -332,7 +354,7 @@ ALTER TABLE `contentwriter`
 -- AUTO_INCREMENT untuk tabel `designer`
 --
 ALTER TABLE `designer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `failed_jobs`
@@ -344,7 +366,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT untuk tabel `log_activity`
 --
 ALTER TABLE `log_activity`
-  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `migrations`
@@ -356,7 +378,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
